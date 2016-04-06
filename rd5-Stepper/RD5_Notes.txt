@@ -1,0 +1,3 @@
+Note 1. See WEB note: 
+http://www.freertos.org/FreeRTOS_Support_Forum_Archive/March_2012/freertos_Strange_behaviour_after_portEND_SWITCHING_ISR_5111217.html
+

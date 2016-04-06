@@ -1,0 +1,36 @@
+Functional Specifications:
+1.	RTOS Tasks
+	a.	BUTTON_DET: 
+		i.	Button press detect (BTN1)
+			1.	Operates in PUSH-ON PUSH-OFF
+		ii.	Toggles LED1
+		iii. Send queue message to DATA_GEN to initiate test when button is
+            pressed
+
+	b.	DATA_GEN:  Generates random data array and write EEPROM 
+		i.	Waits for BUTTON_DET message
+		ii.	Turns on LEDA
+		iii. Generates 1024 byte random array and random bytes (module 256) and
+            random starting address (module 32768).
+		iv.	Turns on LEDB
+		v.	Writes starting address in hexadecimal to line one of the LCD
+            (employs mutex semaphore #1)
+		vi.	Turns off LEDB
+		vii. Sends 1024 bytes of random values and starting address to
+            DATA_CHK task using queue. (suggestion: consider structure to pass data)
+		viii. Waits for results from DATA_CHK task
+		ix.	Turns off LEDA 
+
+	c.	DATA_CHK: Reads EEPROM and compares with data sent from DATA_GEN.
+		i.	Waits for message queue from DATA_GEN task
+		ii.	Writes starting address in hexadecimal to line two of the LCD
+            (employs mutex semaphore #1)
+		iii. Turns on LEDC
+		iv.	Read EEPROM starting at address communicated by message
+		v.	Turns off LEDC
+		vi.	Compares 1024 bytes of data received from DATA_GEN with data read
+            from EEPROM
+		vii. Writes either "PASSED" or "FAILED" to second line of LCD following 
+            the hexadecimal value of the starting address
+            (employs mutex semaphore #1))
+
